@@ -1,20 +1,23 @@
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] });
+import Head from "next/head";
 
 export default function Home() {
-  return (
-    <>
-      <Head>
-        <title>BFAM Ticketing System</title>
-        <meta name="description" content="Ticketing system created to practice Nextjs, react, typescript, redux and much more and probably to track stuff too" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={inter.className}>
-        <h1>HELLO</h1>
-      </main>
-    </>
-  )
+    return (
+        <>
+            <Head>
+                <title>BFAM Ticketing System</title>
+                <meta
+                    name="description"
+                    content="Ticketing system created to practice Nextjs, react, typescript, redux and much more and probably to track stuff too"
+                />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <main>
+                <h1>HELLO</h1>
+            </main>
+        </>
+    );
 }
