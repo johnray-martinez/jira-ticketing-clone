@@ -4,7 +4,7 @@ const SignUpPage = () => {
   return (
     <>
       <Head>
-        <title> Title Page | BFAM Ticketing </title>
+        <title> Sign Up | BFAM Ticketing </title>
         <meta
           name="description"
           content="Create a new account or login with an existing account"
