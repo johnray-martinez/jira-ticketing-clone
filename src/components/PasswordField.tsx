@@ -5,19 +5,21 @@ import {
   TextField,
   InputAdornment,
   IconButton,
-  StandardTextFieldProps,
+  TextFieldProps,
 } from "@mui/material";
 
-interface PasswordFieldProps extends StandardTextFieldProps {
+type PasswordFieldProps = {
   id: string;
   label: string;
   name: string;
-}
+  variant: string;
+} & TextFieldProps;
 
 const PasswordField = ({
   id,
   label,
   name,
+  variant = "outlined",
   ...attributes
 }: PasswordFieldProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -31,7 +33,7 @@ const PasswordField = ({
       id={id}
       label={label}
       name={name}
-      variant="standard"
+      variant={variant}
       fullWidth
       type={isPasswordVisible ? "text" : "password"}
       {...attributes}

@@ -7,7 +7,7 @@ export const authOptions = {
       name: "Credentials",
       credentials: {},
       authorize: async () => {
-        return null;
+        return { id: "123213", name: "Jor", email: "jrmartinez@gmail.com" };
       },
     }),
   ],

@@ -37,7 +37,12 @@ const SignUpForm = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <PasswordField id="password" name="password" label="Password" />
+        <PasswordField
+          id="password"
+          name="password"
+          label="Password"
+          variant="standard"
+        />
       </Grid>
 
       <Grid item xs={12}>
@@ -45,6 +50,7 @@ const SignUpForm = () => {
           id="confirmPassword"
           name="confirmPassword"
           label="Confirm Password"
+          variant="standard"
         />
       </Grid>
     </Grid>
