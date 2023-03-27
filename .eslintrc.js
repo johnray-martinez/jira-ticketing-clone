@@ -35,9 +35,7 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:sonarjs/recommended",
     "plugin:security/recommended",
-    "plugin:react-hooks/recommended",
   ],
-
 
   rules: {
     "@typescript-eslint/no-unused-vars": "error",
@@ -71,4 +69,4 @@ module.exports = {
     "no-nested-ternary": "off",
     "import/prefer-default-export": "off",
   },
-}
+};
