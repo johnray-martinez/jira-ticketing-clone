@@ -2,6 +2,7 @@ import { FormEvent, useCallback } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 
+import { SignUpFormData } from "@/types/signUpForm";
 import { post } from "../helpers/fetch";
 import ModalForm from "./ModalForm";
 import SignUpForm from "./SignUpForm";
@@ -19,14 +20,6 @@ const SignUpFormModal = () => {
   const onSubmitHandler = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-
-      type SignUpFormData = {
-        firstName: HTMLInputElement;
-        lastName: HTMLInputElement;
-        email: HTMLInputElement;
-        password: HTMLInputElement;
-        confirmPassword: HTMLInputElement;
-      };
 
       const { firstName, lastName, email, password, confirmPassword } =
         e.target as typeof e.target & SignUpFormData;

@@ -1,10 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { addUser } from "@/helpers/apiHelpers/authentication";
 
-type Data = {
-  message: string;
-  success: boolean;
-};
+import { addUser } from "@/helpers/user";
+import { Data } from "@/types/data";
 
 export default async function handler(
   req: NextApiRequest,

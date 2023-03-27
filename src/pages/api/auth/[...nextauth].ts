@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { findUser, verifyPassword } from "@/helpers/apiHelpers/authentication";
+import { verifyPassword } from "@/helpers/authentication";
+import { findUser } from "@/helpers/user";
 
 export const authOptions = {
   providers: [

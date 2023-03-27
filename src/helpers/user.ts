@@ -1,21 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
-import { hash, compare } from "bcryptjs";
 
-// TYPES
-type Data = {
-  message: string;
-  success: boolean;
-};
-
-// HELPERS
-const encryptPassword = async (password: string): Promise<string> => {
-  return hash(password, 12);
-};
-
-export const verifyPassword = async (p1: string, p2: string) => {
-  return compare(p1, p2);
-};
+import { encryptPassword } from "./authentication";
+import { Data } from "../types/data";
 
 // DB VARIABLES AND FUNCTIONS
 const USER_COLLECTION = "users";
