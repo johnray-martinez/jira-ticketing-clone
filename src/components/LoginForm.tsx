@@ -22,10 +22,10 @@ const LoginForm = () => {
   useEffect(() => {
     getSession().then(session => {
       if (session) {
-        router.push("/");
+        router.replace("/");
       }
     });
-  }, []);
+  }, [router]);
 
   const onSubmitHandler = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {

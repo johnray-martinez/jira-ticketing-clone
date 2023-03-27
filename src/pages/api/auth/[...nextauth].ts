@@ -4,27 +4,28 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "@/helpers/authentication";
 import { findUser } from "@/helpers/user";
 
-export const authOptions = {
+export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {},
+
       authorize: async credentials => {
         const { email, password } = credentials as {
           email: string;
           password: string;
         };
 
-        const user = await findUser(email);
+        const userData = await findUser(email);
 
-        if (!user) {
+        if (!userData) {
           throw new Error("Email does not exist");
         }
 
-        const { _id, firstName, lastName } = user;
+        const { _id, firstName, lastName } = userData;
         const isPasswordValid = await verifyPassword(
           password,
-          user.hashedPassword
+          userData.hashedPassword
         );
 
         if (!isPasswordValid) {
@@ -40,6 +41,28 @@ export const authOptions = {
       },
     }),
   ],
-};
+  callbacks: {
+    async jwt({ token, user }) {
+      const newToken = { ...token };
 
-export default NextAuth(authOptions);
+      if (user) {
+        newToken.firstName = user.firstName;
+        newToken.lastName = user.lastName;
+        newToken.email = user.email;
+      }
+
+      return newToken;
+    },
+    session({ session, token }) {
+      const newSession = { ...session };
+
+      if (token && newSession.user) {
+        newSession.user.email = token.email;
+        newSession.user.firstName = token.firstName;
+        newSession.user.lastName = token.lastName;
+      }
+
+      return newSession;
+    },
+  },
+});
