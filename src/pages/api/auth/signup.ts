@@ -3,6 +3,7 @@ import { addUser } from "@/helpers/apiHelpers/authentication";
 
 type Data = {
   message: string;
+  success: boolean;
 };
 
 export default async function handler(
@@ -13,7 +14,8 @@ export default async function handler(
     return addUser(req, res);
   }
 
-  return res
-    .status(409)
-    .json({ message: "Invalid operation. Contact your administrator." });
+  return res.status(409).json({
+    success: false,
+    message: "Invalid operation. Contact your administrator.",
+  });
 }

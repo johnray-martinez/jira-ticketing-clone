@@ -1,5 +1,8 @@
-import SignUpFormModal from "@/components/SignUpFormModal";
 import Head from "next/head";
+import { signOut } from "next-auth/react";
+import { Button } from "@mui/material";
+
+import SignUpFormModal from "@/components/SignUpFormModal";
 
 export default function Home() {
   return (
@@ -15,6 +18,7 @@ export default function Home() {
       </Head>
       <main>
         <SignUpFormModal />
+        <Button onClick={() => signOut()}>Sign out</Button>
       </main>
     </>
   );
