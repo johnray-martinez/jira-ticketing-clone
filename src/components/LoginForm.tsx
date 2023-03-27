@@ -1,4 +1,4 @@
-import { useCallback, FormEvent, useState } from "react";
+import { useCallback, FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Grid,
@@ -8,7 +8,7 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import { useSession, signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 
 import PasswordField from "./PasswordField";
 import SignUpFormModal from "./SignUpFormModal";
@@ -16,13 +16,16 @@ import SignUpFormModal from "./SignUpFormModal";
 const LoginForm = () => {
   // HOOKS
   const [isLoading, setIsLoading] = useState(false);
-  const { data: session } = useSession();
   const router = useRouter();
 
   // redirect users that are already logged in
-  if (session) {
-    router.push("/");
-  }
+  useEffect(() => {
+    getSession().then(session => {
+      if (session) {
+        router.push("/");
+      }
+    });
+  }, []);
 
   const onSubmitHandler = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -42,7 +45,7 @@ const LoginForm = () => {
           redirect: false,
         });
 
-        router.push("/");
+        router.replace("/");
       } catch (err) {
         console.error(err);
         setIsLoading(false);

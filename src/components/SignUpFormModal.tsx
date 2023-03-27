@@ -51,7 +51,7 @@ const SignUpFormModal = () => {
           redirect: false,
         });
 
-        router.push("/");
+        router.replace("/");
       } catch (err) {
         console.error(err);
       }
