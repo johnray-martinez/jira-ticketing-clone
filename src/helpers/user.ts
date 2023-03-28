@@ -9,7 +9,7 @@ const USER_COLLECTION = "users";
 const AUTH_COLLECTION = "auth";
 
 const openClient = async () =>
-  MongoClient.connect(process.env.DB_URI as string);
+  MongoClient.connect(process.env.MONGODB_URI as string);
 
 export const findUser = async (email: string, targetAuth = false) => {
   const client = await openClient();
