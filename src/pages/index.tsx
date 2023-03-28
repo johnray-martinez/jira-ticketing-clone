@@ -3,9 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Typography, Button, Grid, Box } from "@mui/material";
 
+import { signOut } from "next-auth/react";
 import { styles } from "@/styles/home.styles";
 
 export default function Home() {
+  const signOutPlz = async () => {
+    await signOut();
+  };
   return (
     <>
       <Head>
@@ -41,6 +45,13 @@ export default function Home() {
                     Start a project
                   </Button>
                 </Link>
+                <Button
+                  onClick={signOutPlz}
+                  sx={styles.button}
+                  variant="outlined"
+                >
+                  Logout
+                </Button>
               </Grid>
             </Grid>
           </Box>
