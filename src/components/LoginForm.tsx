@@ -8,7 +8,9 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
+import Google from "@mui/icons-material/Google";
+import GitHub from "@mui/icons-material/GitHub";
 
 import PasswordField from "./PasswordField";
 import SignUpFormModal from "./SignUpFormModal";
@@ -16,13 +18,7 @@ import SignUpFormModal from "./SignUpFormModal";
 const LoginForm = () => {
   // HOOKS
   const [isLoading, setIsLoading] = useState(false);
-  const { data: session } = useSession();
   const router = useRouter();
-
-  // redirect users that are already logged in
-  if (session) {
-    router.push("/");
-  }
 
   const onSubmitHandler = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -35,24 +31,33 @@ const LoginForm = () => {
         password: HTMLInputElement;
       };
 
-      try {
-        await signIn("credentials", {
-          email: email.value,
-          password: password.value,
-          redirect: false,
-        });
+      const res = await signIn("credentials", {
+        email: email.value,
+        password: password.value,
+        redirect: false,
+      });
 
-        router.push("/");
-      } catch (err) {
-        console.error(err);
+      if (!res?.error) {
         setIsLoading(false);
       }
+
+      setIsLoading(false);
     },
     [router]
   );
 
+  const onGoogleSignIn = useCallback(async () => {
+    await signIn("google");
+  }, []);
+
+  const onGithubSignIn = useCallback(async () => {
+    await signIn("github", {
+      redirect: false,
+    });
+  }, []);
+
   return (
-    <Grid container spacing={2}>
+    <Grid item container spacing={2}>
       <Grid item xs={12}>
         <Typography
           component="h1"
@@ -73,8 +78,8 @@ const LoginForm = () => {
         </Grid>
 
         <Grid
-          container
           item
+          container
           xs={12}
           component="form"
           onSubmit={onSubmitHandler}
@@ -116,6 +121,29 @@ const LoginForm = () => {
 
       <Grid item xs={12}>
         <Divider>or</Divider>
+      </Grid>
+
+      <Grid container item xs={12} spacing={2}>
+        <Grid item xs={6}>
+          <Button
+            variant="outlined"
+            onClick={onGoogleSignIn}
+            startIcon={<Google />}
+            fullWidth
+          >
+            GOOGLE SIGN IN
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            variant="outlined"
+            onClick={onGithubSignIn}
+            startIcon={<GitHub />}
+            fullWidth
+          >
+            GITHUB SIGN IN
+          </Button>
+        </Grid>
       </Grid>
     </Grid>
   );

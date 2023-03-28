@@ -48,10 +48,7 @@ const SignUpFormModal = () => {
         await signIn("credentials", {
           email: email.value,
           password: password.value,
-          redirect: false,
         });
-
-        router.push("/");
       } catch (err) {
         console.error(err);
       }

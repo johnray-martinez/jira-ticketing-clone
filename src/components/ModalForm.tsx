@@ -44,7 +44,7 @@ const ModalForm = ({
           <DialogContent>{children}</DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Subscribe</Button>
+            <Button type="submit">Submit</Button>
           </DialogActions>
         </Box>
       </Dialog>
