@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { addUser } from "@/helpers/user";
+import { addAuthAccount } from "@/helpers/user";
 import { Data } from "@/types/data";
 
 export default async function handler(
@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    return addUser(req, res);
+    return addAuthAccount(req, res);
   }
 
   return res.status(409).json({

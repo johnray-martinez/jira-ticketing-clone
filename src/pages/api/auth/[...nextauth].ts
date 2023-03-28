@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import { verifyPassword } from "@/helpers/authentication";
-import { findUser } from "@/helpers/user";
+import { findUser, addUserProfile } from "@/helpers/user";
 
 export default NextAuth({
   providers: [
@@ -16,7 +17,7 @@ export default NextAuth({
           password: string;
         };
 
-        const userData = await findUser(email);
+        const userData = await findUser(email, true);
 
         if (!userData) {
           throw new Error("Email does not exist");
@@ -35,10 +36,17 @@ export default NextAuth({
         return {
           id: _id.toString(),
           email,
-          firstName,
-          lastName,
+          name: `${firstName} ${lastName}`,
         };
       },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {
@@ -46,8 +54,7 @@ export default NextAuth({
       const newToken = { ...token };
 
       if (user) {
-        newToken.firstName = user.firstName;
-        newToken.lastName = user.lastName;
+        newToken.name = user.name;
         newToken.email = user.email;
       }
 
@@ -58,11 +65,40 @@ export default NextAuth({
 
       if (token && newSession.user) {
         newSession.user.email = token.email;
-        newSession.user.firstName = token.firstName;
-        newSession.user.lastName = token.lastName;
+        newSession.user.name = token.name;
       }
 
       return newSession;
+    },
+    async signIn({ user: { email, name }, account }) {
+      const ERROR_AUTH = "/login?error=Error%20when%20logging%20in";
+
+      if (
+        !account?.access_token &&
+        account?.type === "credentials" &&
+        !account?.providerAccountId
+      ) {
+        return ERROR_AUTH;
+      }
+
+      const foundUser = await findUser(email);
+
+      if (foundUser) {
+        return true;
+      }
+
+      const userObj = {
+        email,
+        displayName: name as string,
+      };
+
+      try {
+        await addUserProfile(userObj);
+      } catch (err) {
+        return ERROR_AUTH;
+      }
+
+      return true;
     },
   },
 });

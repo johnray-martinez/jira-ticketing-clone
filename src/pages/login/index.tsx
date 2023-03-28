@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Grid } from "@mui/material";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 
 import LoginForm from "@/components/LoginForm";
 
@@ -21,7 +23,9 @@ const LoginPage = () => {
           />
         </Grid>
         <Grid container item md={6} lg={4} alignItems="center" padding={5}>
-          <LoginForm />
+          <Grid item xs={12}>
+            <LoginForm />
+          </Grid>
         </Grid>
       </Grid>
     </>
@@ -29,3 +33,20 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

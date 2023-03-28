@@ -1,13 +1,10 @@
 import Head from "next/head";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Button } from "@mui/material";
 
 import SignUpFormModal from "@/components/SignUpFormModal";
 
 export default function Home() {
-  const { data: session } = useSession();
-
-  console.log(session);
   return (
     <>
       <Head>
