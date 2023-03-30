@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
@@ -51,7 +52,7 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const newToken = { ...token };
+      const newToken: JWT = { ...token };
 
       if (user) {
         newToken.name = user.name;
