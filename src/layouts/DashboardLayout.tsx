@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import DashboardDrawer from "@/components/DashboardDrawer";
-import { Box, Toolbar } from "@mui/material/";
+import { Box } from "@mui/material/";
 
 type DashboardLayoutProps = {
   children: ReactElement;
@@ -19,7 +19,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar />
         {children}
       </Box>
     </Box>

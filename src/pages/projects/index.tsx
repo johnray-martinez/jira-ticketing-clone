@@ -4,7 +4,7 @@ import Head from "next/head";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { Typography } from "@mui/material";
 
-const DashboardPage = () => {
+const ProjectsPage = () => {
   return (
     <>
       <Head>
@@ -23,7 +23,7 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default ProjectsPage;
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const session = await getSession(context);

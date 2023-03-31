@@ -10,6 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -19,10 +20,15 @@ const DashboardDrawer = () => {
       <Toolbar />
       <Divider />
       <List>
-        <ListItemButton>
-          <ListItemText primary="Create a Project" sx={{ fontWeight: "700" }} />
-          <AddIcon />
-        </ListItemButton>
+        <Link href="/projects/create">
+          <ListItemButton>
+            <ListItemText
+              primary="Create a Project"
+              sx={{ fontWeight: "700" }}
+            />
+            <AddIcon />
+          </ListItemButton>
+        </Link>
         <ListItem>
           <ListItemText primary="Projects" sx={{ fontWeight: "700" }} />
         </ListItem>
