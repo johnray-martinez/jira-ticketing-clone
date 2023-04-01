@@ -6,7 +6,7 @@ type ProjectQuestionnaireProps = {
 
 const ProjectQuestionnaire = ({ nextStep }: ProjectQuestionnaireProps) => {
   return (
-    <Grid container justifyContent="center" alignItems="center" pt={32}>
+    <Grid container justifyContent="center" alignItems="center" pt={16}>
       <Grid item md={8}>
         <Typography variant="h2" component="h1" textAlign="center">
           Let us get you started!

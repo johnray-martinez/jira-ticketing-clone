@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -10,25 +12,27 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
-import Link from "next/link";
+import IconButton from "@mui/material/IconButton";
 
 const drawerWidth = 240;
 
 const DashboardDrawer = () => {
+  const router = useRouter();
+  const redirectToCreate = useCallback(() => {
+    router.push("/projects/create");
+  }, [router]);
+
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        <Link href="/projects/create">
-          <ListItemButton>
-            <ListItemText
-              primary="Create a Project"
-              sx={{ fontWeight: "700" }}
-            />
+        <ListItem>
+          <ListItemText primary="Create a Project" sx={{ fontWeight: "700" }} />
+          <IconButton onClick={redirectToCreate}>
             <AddIcon />
-          </ListItemButton>
-        </Link>
+          </IconButton>
+        </ListItem>
         <ListItem>
           <ListItemText primary="Projects" sx={{ fontWeight: "700" }} />
         </ListItem>

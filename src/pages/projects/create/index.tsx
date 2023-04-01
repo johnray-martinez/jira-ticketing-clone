@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import ProjectQuestionnaire from "@/components/ProjectQuestionnaire";
+import SwimlanesQuestionnaire from "@/components/SwimlanesQuestionnaire";
 
 const CreateProjectPage = () => {
   // HOOKS
@@ -13,7 +14,7 @@ const CreateProjectPage = () => {
   const renderedQuestion = useMemo(() => {
     switch (step) {
       case 1:
-        return <h1>HELLO</h1>;
+        return <SwimlanesQuestionnaire nextStep={nextStep} />;
       case 2:
         return <h1>HI</h1>;
       default:
