@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
 
+import { User, UserAuth } from "@/types/user";
 import { encryptPassword } from "./authentication";
 import { Data } from "../types/data";
 
@@ -16,8 +17,22 @@ export const findUser = async (email: string, targetAuth = false) => {
   const db = client.db();
 
   const result = await db
-    .collection(targetAuth ? AUTH_COLLECTION : USER_COLLECTION)
+    .collection<User | UserAuth>(targetAuth ? AUTH_COLLECTION : USER_COLLECTION)
     .findOne({ email });
+
+  client.close();
+
+  return result;
+};
+
+export const findUsers = async (email: string) => {
+  const client = await openClient();
+  const db = client.db();
+
+  const result = await db
+    .collection<User>(USER_COLLECTION)
+    .find({ email: { $regex: email } })
+    .toArray();
 
   client.close();
 

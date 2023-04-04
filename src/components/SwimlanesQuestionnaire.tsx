@@ -1,4 +1,4 @@
-import { useState, FormEvent, Fragment } from "react";
+import { useState, FormEvent, Fragment, memo } from "react";
 import {
   Grid,
   Typography,
@@ -97,11 +97,11 @@ const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
       </Grid>
       <Grid item md={8} pt={16} display="flex" justifyContent="center">
         <Button variant="contained" onClick={nextStep}>
-          This sounds good!
+          On to the next!
         </Button>
       </Grid>
     </Grid>
   );
 };
 
-export default SwimlanesQuestionnaire;
+export default memo(SwimlanesQuestionnaire);

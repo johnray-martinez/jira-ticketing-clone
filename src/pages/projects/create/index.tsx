@@ -1,7 +1,10 @@
 import { useState, useMemo, useCallback } from "react";
+import { getSession } from "next-auth/react";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import ProjectQuestionnaire from "@/components/ProjectQuestionnaire";
 import SwimlanesQuestionnaire from "@/components/SwimlanesQuestionnaire";
+import ParticipantsQuestionnaire from "@/components/ParticipantsQuestionnaire";
+import { GetServerSideProps } from "next";
 
 const CreateProjectPage = () => {
   // HOOKS
@@ -16,7 +19,7 @@ const CreateProjectPage = () => {
       case 1:
         return <SwimlanesQuestionnaire nextStep={nextStep} />;
       case 2:
-        return <h1>HI</h1>;
+        return <ParticipantsQuestionnaire nextStep={nextStep} />;
       default:
         return <ProjectQuestionnaire nextStep={nextStep} />;
     }
@@ -26,3 +29,19 @@ const CreateProjectPage = () => {
 };
 
 export default CreateProjectPage;
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

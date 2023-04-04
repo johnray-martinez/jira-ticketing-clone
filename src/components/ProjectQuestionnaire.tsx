@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Grid, TextField, Typography, Button } from "@mui/material";
 
 type ProjectQuestionnaireProps = {
@@ -31,4 +32,4 @@ const ProjectQuestionnaire = ({ nextStep }: ProjectQuestionnaireProps) => {
   );
 };
 
-export default ProjectQuestionnaire;
+export default memo(ProjectQuestionnaire);

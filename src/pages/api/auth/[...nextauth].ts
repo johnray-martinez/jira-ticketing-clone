@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { verifyPassword } from "@/helpers/authentication";
 import { findUser, addUserProfile } from "@/helpers/user";
+import { UserAuth } from "@/types/user";
 
 export default NextAuth({
   providers: [
@@ -24,11 +25,9 @@ export default NextAuth({
           throw new Error("Email does not exist");
         }
 
-        const { _id, firstName, lastName } = userData;
-        const isPasswordValid = await verifyPassword(
-          password,
-          userData.hashedPassword
-        );
+        const { _id, firstName, lastName, hashedPassword } =
+          userData as UserAuth;
+        const isPasswordValid = await verifyPassword(password, hashedPassword);
 
         if (!isPasswordValid) {
           throw new Error("Incorrect password or email.");
