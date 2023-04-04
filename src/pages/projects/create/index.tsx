@@ -20,16 +20,12 @@ const CreateProjectPage = () => {
   const [step, setStep] = useState(0);
   const [projectDetails, setProjectDetails] = useState<Project>(INITIAL_DATA);
 
-  const nextStep = useCallback(() => {
-    setStep(step + 1);
-  }, [step]);
-
   const updateProjectDetails = useCallback(
     (newData: { [key: string]: string | Map<string, string> | User[] }) => {
       const newProjectDetails = { ...projectDetails, ...newData };
 
       setProjectDetails(newProjectDetails);
-      nextStep();
+      setStep(step + 1);
     },
     [projectDetails]
   );
@@ -44,9 +40,8 @@ const CreateProjectPage = () => {
       default:
         return <ProjectQuestionnaire nextStep={updateProjectDetails} />;
     }
-  }, [step, nextStep]);
+  }, [step, updateProjectDetails]);
 
-  console.log(projectDetails);
   return <DashboardLayout>{renderedQuestion}</DashboardLayout>;
 };
 
