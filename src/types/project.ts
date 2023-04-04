@@ -3,7 +3,7 @@ import { Ticket } from "./ticket";
 
 export type Project = {
   name: string;
-  swimlanes: Map<string, string>;
+  swimlanes: string[];
   participants: User[];
   tickets: Ticket[];
 };

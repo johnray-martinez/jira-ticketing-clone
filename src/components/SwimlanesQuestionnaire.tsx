@@ -14,12 +14,12 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type SwimlanesQuestionnaireProps = {
-  nextStep: (newData: { [key: string]: Map<string, string> }) => void;
+  nextStep: (newData: { [key: string]: string[] }) => void;
 };
 
 const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
   // HOOKS
-  const [swimlanes, setSwimlanes] = useState<Map<string, string>>(new Map());
+  const [swimlanes, setSwimlanes] = useState<string[]>([]);
 
   // HELPERS
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -31,20 +31,19 @@ const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
       columnName: HTMLFormElement;
     };
 
-    if (swimlanes.has(value)) {
+    if (swimlanes.some(lane => value === lane)) {
       return;
     }
 
-    const newSwimlanes = new Map(swimlanes);
-    newSwimlanes.set(value, newSwimlanes.size.toString());
+    const newSwimlanes = [...swimlanes];
+    newSwimlanes.push(value);
     setSwimlanes(newSwimlanes);
     (e.target as HTMLFormElement).reset();
   };
 
   const removeToList = (columnName: string) => {
-    const newSwimlanes = new Map(swimlanes);
+    const newSwimlanes = swimlanes.filter(lane => lane !== columnName);
 
-    newSwimlanes.delete(columnName);
     setSwimlanes(newSwimlanes);
   };
 
@@ -77,9 +76,9 @@ const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
           Columns
         </Typography>
         <List>
-          {Array.from(swimlanes).map(([column, id]) => {
+          {swimlanes.map(column => {
             return (
-              <Fragment key={id}>
+              <Fragment key={column}>
                 <ListItem
                   secondaryAction={
                     <IconButton
