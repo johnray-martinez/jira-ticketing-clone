@@ -14,12 +14,12 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type SwimlanesQuestionnaireProps = {
-  nextStep: () => void;
+  nextStep: (newData: { [key: string]: Map<string, string> }) => void;
 };
 
 const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
   // HOOKS
-  const [columnsMap, setColumnsMap] = useState(new Map());
+  const [swimlanes, setSwimlanes] = useState<Map<string, string>>(new Map());
 
   // HELPERS
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -31,21 +31,25 @@ const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
       columnName: HTMLFormElement;
     };
 
-    if (columnsMap.has(value)) {
+    if (swimlanes.has(value)) {
       return;
     }
 
-    const newColumnsMap = new Map(columnsMap);
-    newColumnsMap.set(value, newColumnsMap.size);
-    setColumnsMap(newColumnsMap);
+    const newSwimlanes = new Map(swimlanes);
+    newSwimlanes.set(value, newSwimlanes.size.toString());
+    setSwimlanes(newSwimlanes);
     (e.target as HTMLFormElement).reset();
   };
 
   const removeToList = (columnName: string) => {
-    const newColumnsMap = new Map(columnsMap);
+    const newSwimlanes = new Map(swimlanes);
 
-    newColumnsMap.delete(columnName);
-    setColumnsMap(newColumnsMap);
+    newSwimlanes.delete(columnName);
+    setSwimlanes(newSwimlanes);
+  };
+
+  const nextStepHandler = () => {
+    nextStep({ swimlanes });
   };
 
   return (
@@ -73,7 +77,7 @@ const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
           Columns
         </Typography>
         <List>
-          {Array.from(columnsMap).map(([column, id]) => {
+          {Array.from(swimlanes).map(([column, id]) => {
             return (
               <Fragment key={id}>
                 <ListItem
@@ -96,7 +100,7 @@ const SwimlanesQuestionnaire = ({ nextStep }: SwimlanesQuestionnaireProps) => {
         </List>
       </Grid>
       <Grid item md={8} pt={16} display="flex" justifyContent="center">
-        <Button variant="contained" onClick={nextStep}>
+        <Button variant="contained" onClick={nextStepHandler}>
           On to the next!
         </Button>
       </Grid>

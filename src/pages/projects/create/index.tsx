@@ -5,26 +5,48 @@ import ProjectQuestionnaire from "@/components/ProjectQuestionnaire";
 import SwimlanesQuestionnaire from "@/components/SwimlanesQuestionnaire";
 import ParticipantsQuestionnaire from "@/components/ParticipantsQuestionnaire";
 import { GetServerSideProps } from "next";
+import { Project } from "@/types/project";
+import { User } from "@/types/user";
+
+const INITIAL_DATA = {
+  name: "",
+  swimlanes: new Map(),
+  participants: [],
+  tickets: [],
+};
 
 const CreateProjectPage = () => {
   // HOOKS
   const [step, setStep] = useState(0);
+  const [projectDetails, setProjectDetails] = useState<Project>(INITIAL_DATA);
 
   const nextStep = useCallback(() => {
     setStep(step + 1);
   }, [step]);
 
+  const updateProjectDetails = useCallback(
+    (newData: { [key: string]: string | Map<string, string> | User[] }) => {
+      const newProjectDetails = { ...projectDetails, ...newData };
+
+      setProjectDetails(newProjectDetails);
+      nextStep();
+    },
+    [projectDetails]
+  );
+
+  // VIEW HANDLER
   const renderedQuestion = useMemo(() => {
     switch (step) {
       case 1:
-        return <SwimlanesQuestionnaire nextStep={nextStep} />;
+        return <SwimlanesQuestionnaire nextStep={updateProjectDetails} />;
       case 2:
-        return <ParticipantsQuestionnaire nextStep={nextStep} />;
+        return <ParticipantsQuestionnaire nextStep={updateProjectDetails} />;
       default:
-        return <ProjectQuestionnaire nextStep={nextStep} />;
+        return <ProjectQuestionnaire nextStep={updateProjectDetails} />;
     }
   }, [step, nextStep]);
 
+  console.log(projectDetails);
   return <DashboardLayout>{renderedQuestion}</DashboardLayout>;
 };
 

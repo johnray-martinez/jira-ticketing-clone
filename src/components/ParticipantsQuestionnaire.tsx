@@ -1,4 +1,6 @@
 import { useState, Fragment, memo } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { User } from "@/types/user";
 import {
   Grid,
   Typography,
@@ -9,12 +11,10 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { User } from "@/types/user";
 import EmailSearchDropdown from "./EmailSearchDropdown";
 
 type ParticipantsQuestionnaireProps = {
-  nextStep: () => void;
+  nextStep: (newData: { [key: string]: User[] }) => void;
 };
 
 const ParticipantsQuestionnaire = ({
@@ -40,6 +40,10 @@ const ParticipantsQuestionnaire = ({
     }
 
     setParticipants([...participants, user]);
+  };
+
+  const nextStepHandler = () => {
+    nextStep({ participants });
   };
 
   return (
@@ -80,7 +84,7 @@ const ParticipantsQuestionnaire = ({
         </List>
       </Grid>
       <Grid item md={8} pt={16} display="flex" justifyContent="center">
-        <Button variant="contained" onClick={nextStep}>
+        <Button variant="contained" onClick={nextStepHandler}>
           That&#39;s Everyone!
         </Button>
       </Grid>

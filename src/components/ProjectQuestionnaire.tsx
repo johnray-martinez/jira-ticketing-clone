@@ -1,11 +1,21 @@
-import { memo } from "react";
+import { memo, useState, ChangeEvent } from "react";
 import { Grid, TextField, Typography, Button } from "@mui/material";
 
 type ProjectQuestionnaireProps = {
-  nextStep: () => void;
+  nextStep: (newData: { [key: string]: string }) => void;
 };
 
 const ProjectQuestionnaire = ({ nextStep }: ProjectQuestionnaireProps) => {
+  const [name, setName] = useState("");
+
+  const nextStepHandler = () => {
+    nextStep({ name });
+  };
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
   return (
     <Grid container justifyContent="center" alignItems="center" pt={16}>
       <Grid item md={8}>
@@ -21,10 +31,11 @@ const ProjectQuestionnaire = ({ nextStep }: ProjectQuestionnaireProps) => {
           id="standard-basic"
           label="Project Name"
           variant="standard"
+          onChange={onChangeHandler}
         />
       </Grid>
       <Grid item md={8} pt={16} display="flex" justifyContent="center">
-        <Button variant="contained" onClick={nextStep}>
+        <Button variant="contained" onClick={nextStepHandler}>
           This sounds good!
         </Button>
       </Grid>
