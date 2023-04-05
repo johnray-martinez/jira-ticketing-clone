@@ -21,7 +21,8 @@ export const createProject = async (project: Project) => {
         { $push: { project: project.id } }
       );
   } catch (err) {
-    console.log(err);
+    // eslint-disable-next-line no-console
+    console.error(err);
   }
 
   closeClient();

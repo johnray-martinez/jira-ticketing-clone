@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src/ --ext .ts, .tsx, .js, .jsx --fix && prettier --write 'src/**/*.{ ts, tsx, js, jsx }'",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",

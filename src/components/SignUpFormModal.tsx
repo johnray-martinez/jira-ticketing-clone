@@ -45,6 +45,7 @@ const SignUpFormModal = () => {
         password: password.value,
       });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   }, []);
