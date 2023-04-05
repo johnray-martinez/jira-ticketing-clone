@@ -7,3 +7,7 @@ export const post = async (url: string, body: string) => {
     body,
   }).then(res => res.json());
 };
+
+export const get = async (url: string) => {
+  return fetch(url).then(res => res.json());
+};

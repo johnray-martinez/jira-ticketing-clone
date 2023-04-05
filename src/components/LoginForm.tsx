@@ -1,5 +1,4 @@
 import { useCallback, FormEvent, useState } from "react";
-import { useRouter } from "next/router";
 import {
   Grid,
   TextField,
@@ -18,42 +17,35 @@ import SignUpFormModal from "./SignUpFormModal";
 const LoginForm = () => {
   // HOOKS
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const onSubmitHandler = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const onSubmitHandler = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+    setIsLoading(true);
 
-      setIsLoading(true);
+    const { email, password } = e.target as typeof e.target & {
+      email: HTMLInputElement;
+      password: HTMLInputElement;
+    };
 
-      const { email, password } = e.target as typeof e.target & {
-        email: HTMLInputElement;
-        password: HTMLInputElement;
-      };
+    const res = await signIn("credentials", {
+      email: email.value,
+      password: password.value,
+      redirect: false,
+    });
 
-      const res = await signIn("credentials", {
-        email: email.value,
-        password: password.value,
-        redirect: false,
-      });
-
-      if (!res?.error) {
-        setIsLoading(false);
-      }
-
+    if (!res?.error) {
       setIsLoading(false);
-    },
-    [router]
-  );
+    }
+
+    setIsLoading(false);
+  }, []);
 
   const onGoogleSignIn = useCallback(async () => {
     await signIn("google");
   }, []);
 
   const onGithubSignIn = useCallback(async () => {
-    await signIn("github", {
-      redirect: false,
-    });
+    await signIn("github");
   }, []);
 
   return (

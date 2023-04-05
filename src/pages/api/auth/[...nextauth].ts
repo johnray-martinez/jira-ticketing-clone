@@ -1,9 +1,11 @@
 import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { verifyPassword } from "@/helpers/authentication";
 import { findUser, addUserProfile } from "@/helpers/user";
+import { UserAuth } from "@/types/user";
 
 export default NextAuth({
   providers: [
@@ -23,18 +25,15 @@ export default NextAuth({
           throw new Error("Email does not exist");
         }
 
-        const { _id, firstName, lastName } = userData;
-        const isPasswordValid = await verifyPassword(
-          password,
-          userData.hashedPassword
-        );
+        const { firstName, lastName, hashedPassword } = userData as UserAuth;
+        const isPasswordValid = await verifyPassword(password, hashedPassword);
 
         if (!isPasswordValid) {
           throw new Error("Incorrect password or email.");
         }
 
         return {
-          id: _id.toString(),
+          id: email,
           email,
           name: `${firstName} ${lastName}`,
         };
@@ -52,7 +51,7 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
-      const newToken = { ...token };
+      const newToken: JWT = { ...token };
 
       if (user) {
         newToken.name = user.name;

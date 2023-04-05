@@ -1,40 +1,61 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { MongoClient } from "mongodb";
 
+import { User, UserAuth } from "@/types/user";
+import { ObjectId } from "mongodb";
 import { encryptPassword } from "./authentication";
 import { Data } from "../types/data";
-
-// DB VARIABLES AND FUNCTIONS
-const USER_COLLECTION = "users";
-const AUTH_COLLECTION = "auth";
-
-const openClient = async () =>
-  MongoClient.connect(process.env.MONGODB_URI as string);
+import {
+  openClient,
+  closeClient,
+  AUTH_COLLECTION,
+  USER_COLLECTION,
+} from "./db";
 
 export const findUser = async (email: string, targetAuth = false) => {
-  const client = await openClient();
-  const db = client.db();
+  const db = await openClient();
 
   const result = await db
-    .collection(targetAuth ? AUTH_COLLECTION : USER_COLLECTION)
+    .collection<User | UserAuth>(targetAuth ? AUTH_COLLECTION : USER_COLLECTION)
     .findOne({ email });
 
-  client.close();
+  closeClient();
 
-  return result;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { _id, ...user } = result as (User | UserAuth) & {
+    _id: ObjectId;
+  };
+
+  return user;
+};
+
+export const findUsers = async (email: string) => {
+  const db = await openClient();
+  const result = await db
+    .collection<User>(USER_COLLECTION)
+    .find({ email: { $regex: email } })
+    .toArray();
+
+  closeClient();
+
+  return result.map(data => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id, ...user } = data as User & {
+      _id: ObjectId;
+    };
+    return user;
+  });
 };
 
 export const addAuthAccount = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
-  const client = await openClient();
-  const db = client.db();
+  const db = await openClient();
 
   const user = await findUser(req.body.email, true);
 
   if (user) {
-    client.close();
+    closeClient();
 
     return res
       .status(409)
@@ -51,7 +72,7 @@ export const addAuthAccount = async (
     lastName,
   });
 
-  client.close();
+  closeClient();
 
   return res.status(200).json({ success: true, message: "Successful" });
 };
@@ -63,13 +84,12 @@ export const addUserProfile = async ({
   email: string;
   displayName: string;
 }) => {
-  const client = await openClient();
-  const db = client.db();
+  const db = await openClient();
 
   const user = await findUser(email);
 
   if (user) {
-    client.close();
+    closeClient();
 
     throw new Error("User already exists with that email.");
   }
@@ -79,5 +99,5 @@ export const addUserProfile = async ({
     displayName,
   });
 
-  client.close();
+  closeClient();
 };

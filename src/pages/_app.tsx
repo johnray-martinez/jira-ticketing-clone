@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-
-// import { UserContextProvider } from "@/store/userContext";
+import NavBar from "@/components/Navbar";
+import { UserContextProvider } from "@/store/userContext";
 
 import "../styles/globalStyles.css";
 
@@ -11,9 +11,12 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      {/* <UserContextProvider> */}
-      <Component {...pageProps} />
-      {/* </UserContextProvider> */}
+      <UserContextProvider>
+        <>
+          <NavBar />
+          <Component {...pageProps} />
+        </>
+      </UserContextProvider>
     </SessionProvider>
   );
 }

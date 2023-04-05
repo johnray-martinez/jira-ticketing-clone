@@ -10,7 +10,7 @@ const LoginPage = () => {
   return (
     <>
       <Head>
-        <title> Log In | BFAM Ticketing </title>
+        <title> Log In | Tix </title>
         <meta name="description" content="Log In with an existing account" />
       </Head>
       <Grid container height="100vh">
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   if (session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/project",
         permanent: false,
       },
     };
