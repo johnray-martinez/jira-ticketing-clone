@@ -1,8 +1,10 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
+import { useContext } from "react";
 import { useRouter } from "next/router";
 
 import { Project } from "@/types/project";
 import { post } from "@/helpers/fetch";
+import UserContext from "@/store/userContext";
 import { v4 } from "uuid";
 
 type CreateProjectSummaryProps = {
@@ -12,15 +14,21 @@ type CreateProjectSummaryProps = {
 const CreateProjectSummary = ({ project }: CreateProjectSummaryProps) => {
   const { name, participants, swimlanes } = project;
   const router = useRouter();
+  const { setUserProjects, userProjects } = useContext(UserContext);
 
   const generateProject = async () => {
     const newProject = project;
     newProject.id = v4();
     const parsedProject = JSON.stringify(newProject);
 
-    await post("/api/project", parsedProject);
-
-    router.push(`/project/${newProject.id}`);
+    try {
+      await post("/api/project", parsedProject);
+      setUserProjects([...userProjects, newProject]);
+      router.push(`/project/${newProject.id}`);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
   };
 
   return (
