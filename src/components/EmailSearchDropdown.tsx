@@ -66,7 +66,7 @@ const EmailSearchDropdown = ({ addParticipant }: EmailSearchDropdownProps) => {
         onClose={() => {
           setOpen(false);
         }}
-        isOptionEqualToValue={(option, value) => option._id === value._id}
+        isOptionEqualToValue={(option, value) => option.email === value.email}
         getOptionLabel={option => option.email}
         options={options}
         loading={loading}

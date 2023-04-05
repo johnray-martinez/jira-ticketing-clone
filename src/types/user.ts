@@ -1,12 +1,11 @@
 export type User = {
   email: string;
-  _id: string;
   displayName: string;
+  project: string[];
 };
 
 export type UserAuth = {
   email: string;
-  _id: string;
   firstName: string;
   lastName: string;
   hashedPassword: string;

@@ -23,16 +23,16 @@ const ParticipantsQuestionnaire = ({
   // HOOKS
   const [participants, setParticipants] = useState<User[]>([]);
 
-  const removeParticipant = (id: string) => {
+  const removeParticipant = (email: string) => {
     const newParticipants = participants.filter(
-      participant => participant._id !== id
+      participant => participant.email !== email
     );
     setParticipants(newParticipants);
   };
 
   const addToParticipantsList = (user: User) => {
     const isUserAlreadyIncluded = participants.some(
-      participant => participant._id === user._id
+      participant => participant.email === user.email
     );
 
     if (isUserAlreadyIncluded) {
@@ -61,15 +61,15 @@ const ParticipantsQuestionnaire = ({
           Participants
         </Typography>
         <List>
-          {participants.map(({ _id, email }) => {
+          {participants.map(({ email }) => {
             return (
-              <Fragment key={_id}>
+              <Fragment key={email}>
                 <ListItem
                   secondaryAction={
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => removeParticipant(_id)}
+                      onClick={() => removeParticipant(email)}
                     >
                       <DeleteIcon />
                     </IconButton>

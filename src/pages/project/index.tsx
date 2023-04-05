@@ -1,10 +1,27 @@
+import { useContext, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-import DashboardLayout from "@/layouts/DashboardLayout";
-import { Typography } from "@mui/material";
 
-const ProjectsPage = () => {
+import DashboardLayout from "@/layouts/DashboardLayout";
+import UserContext from "@/store/userContext";
+import { User } from "@/types/user";
+import { Project } from "@/types/project";
+import { Typography } from "@mui/material";
+import { findUser } from "@/helpers/user";
+import { getProjects } from "@/helpers/project";
+
+type ProjectsPageProps = {
+  currentUser: User;
+  userProjects: Project[];
+};
+
+const ProjectsPage = ({ currentUser, userProjects }: ProjectsPageProps) => {
+  const { setCurrentUser } = useContext(UserContext);
+
+  useEffect(() => {
+    setCurrentUser(currentUser, userProjects);
+  });
   return (
     <>
       <Head>
@@ -16,7 +33,7 @@ const ProjectsPage = () => {
       </Head>
       <DashboardLayout>
         <Typography variant="h1" component="h1">
-          DASHBOARD PAGE BIETCH
+          This is where the projects overview will live
         </Typography>
       </DashboardLayout>
     </>
@@ -36,7 +53,14 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
+
+  const user = (await findUser(session.user?.email as string)) as User;
+  const projects = (await getProjects(user.project)) as Project[];
+
   return {
-    props: {},
+    props: {
+      currentUser: user,
+      userProjects: projects,
+    },
   };
 };

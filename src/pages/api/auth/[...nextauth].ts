@@ -25,8 +25,7 @@ export default NextAuth({
           throw new Error("Email does not exist");
         }
 
-        const { _id, firstName, lastName, hashedPassword } =
-          userData as UserAuth;
+        const { firstName, lastName, hashedPassword } = userData as UserAuth;
         const isPasswordValid = await verifyPassword(password, hashedPassword);
 
         if (!isPasswordValid) {
@@ -34,7 +33,7 @@ export default NextAuth({
         }
 
         return {
-          id: _id.toString(),
+          id: email,
           email,
           name: `${firstName} ${lastName}`,
         };

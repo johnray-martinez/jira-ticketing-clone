@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   if (session) {
     return {
       redirect: {
-        destination: "/projects",
+        destination: "/project",
         permanent: false,
       },
     };

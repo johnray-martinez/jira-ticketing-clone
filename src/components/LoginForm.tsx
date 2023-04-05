@@ -17,7 +17,6 @@ import SignUpFormModal from "./SignUpFormModal";
 const LoginForm = () => {
   // HOOKS
   const [isLoading, setIsLoading] = useState(false);
-
   const onSubmitHandler = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

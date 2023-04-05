@@ -1,7 +1,9 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
+import { useRouter } from "next/router";
 
 import { Project } from "@/types/project";
 import { post } from "@/helpers/fetch";
+import { v4 } from "uuid";
 
 type CreateProjectSummaryProps = {
   project: Project;
@@ -9,10 +11,16 @@ type CreateProjectSummaryProps = {
 
 const CreateProjectSummary = ({ project }: CreateProjectSummaryProps) => {
   const { name, participants, swimlanes } = project;
+  const router = useRouter();
 
   const generateProject = async () => {
-    const parsedProject = JSON.stringify(project);
+    const newProject = project;
+    newProject.id = v4();
+    const parsedProject = JSON.stringify(newProject);
+
     await post("/api/project", parsedProject);
+
+    router.push(`/project/${newProject.id}`);
   };
 
   return (
@@ -56,7 +64,7 @@ const CreateProjectSummary = ({ project }: CreateProjectSummaryProps) => {
             </Typography>
             {participants.map(user => {
               return (
-                <Typography key={user._id} variant="body2" gutterBottom>
+                <Typography key={user.email} variant="body2" gutterBottom>
                   {user.email}
                 </Typography>
               );

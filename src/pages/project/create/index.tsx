@@ -7,9 +7,11 @@ import ParticipantsQuestionnaire from "@/components/ParticipantsQuestionnaire";
 import { GetServerSideProps } from "next";
 import { Project } from "@/types/project";
 import { User } from "@/types/user";
+import Head from "next/head";
 import CreateProjectSummary from "@/components/CreateProjectSummary";
 
 const INITIAL_DATA = {
+  id: "",
   name: "",
   swimlanes: [],
   participants: [],
@@ -44,7 +46,14 @@ const CreateProjectPage = () => {
     }
   };
 
-  return <DashboardLayout>{renderQuestion()}</DashboardLayout>;
+  return (
+    <>
+      <Head>
+        <title>Create a Project | Tix</title>
+      </Head>
+      <DashboardLayout>{renderQuestion()}</DashboardLayout>;
+    </>
+  );
 };
 
 export default CreateProjectPage;

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { User, UserAuth } from "@/types/user";
+import { ObjectId } from "mongodb";
 import { encryptPassword } from "./authentication";
 import { Data } from "../types/data";
 import {
@@ -19,7 +20,12 @@ export const findUser = async (email: string, targetAuth = false) => {
 
   closeClient();
 
-  return result;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { _id, ...user } = result as (User | UserAuth) & {
+    _id: ObjectId;
+  };
+
+  return user;
 };
 
 export const findUsers = async (email: string) => {
@@ -31,7 +37,13 @@ export const findUsers = async (email: string) => {
 
   closeClient();
 
-  return result;
+  return result.map(data => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id, ...user } = data as User & {
+      _id: ObjectId;
+    };
+    return user;
+  });
 };
 
 export const addAuthAccount = async (
