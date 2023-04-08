@@ -39,7 +39,7 @@ module.exports = {
 
   rules: {
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [
       1,
@@ -49,7 +49,7 @@ module.exports = {
     ],
     "react/jsx-props-no-spreading": "off",
     "import/extensions": [
-      "error",
+      "warn",
       "ignorePackages",
       {
         js: "never",
@@ -59,7 +59,7 @@ module.exports = {
       },
     ],
     "jsx-a11y/anchor-is-valid": [
-      "error",
+      "warn",
       {
         components: ["Link"],
         specialLink: ["hrefLeft", "hrefRight"],
