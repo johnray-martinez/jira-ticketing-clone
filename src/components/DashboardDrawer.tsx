@@ -21,11 +21,11 @@ const drawerWidth = 240;
 const DashboardDrawer = () => {
   // HOOKS
   const router = useRouter();
-  const { userProjects, currentUser, setCurrentUser } = useContext(UserContext);
+  const { userProjects, setCurrentUser } = useContext(UserContext);
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (currentUser === null || status === "loading") return;
+    if (status === "loading") return;
 
     const getProjectsFromSessionAsync = async () => {
       const { result: user } = await get(`/api/user/${session?.user?.email}`);
@@ -33,7 +33,7 @@ const DashboardDrawer = () => {
       setCurrentUser(user, user.project);
     };
     getProjectsFromSessionAsync();
-  }, [status]);
+  }, [status, session?.user?.email, setCurrentUser]);
 
   // HELPERS
   const redirectToCreate = () => {
