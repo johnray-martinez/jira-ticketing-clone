@@ -1,5 +1,7 @@
-import { memo, useContext } from "react";
+import { memo, useContext, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { get } from "@/helpers/fetch";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -19,13 +21,27 @@ const drawerWidth = 240;
 const DashboardDrawer = () => {
   // HOOKS
   const router = useRouter();
+  const { userProjects, currentUser, setCurrentUser } = useContext(UserContext);
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (currentUser === null || status === "loading") return;
+
+    const getProjectsFromSessionAsync = async () => {
+      const { result: user } = await get(`/api/user/${session?.user?.email}`);
+
+      setCurrentUser(user, user.project);
+    };
+    getProjectsFromSessionAsync();
+  }, [status]);
+
+  // HELPERS
   const redirectToCreate = () => {
     router.push("/project/create");
   };
   const redirectToProjectDetails = (id: string) => {
     router.push(`/project/${id}`);
   };
-  const { userProjects } = useContext(UserContext);
 
   const drawer = (
     <div>
