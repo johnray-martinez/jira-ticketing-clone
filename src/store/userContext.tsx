@@ -1,4 +1,4 @@
-import { createContext, useState, ReactElement } from "react";
+import { createContext, useState, ReactElement, useCallback } from "react";
 
 import { User } from "@/types/user";
 import { Project } from "@/types/project";
@@ -28,14 +28,17 @@ export const UserContextProvider = ({
     project: [] as string[],
   });
 
-  const setCurrentUserHandler = (user: User, projects: Project[]) => {
-    setCurrentUser(user);
-    setUserProjects(projects);
-  };
+  const setCurrentUserHandler = useCallback(
+    (user: User, projects: Project[]) => {
+      setCurrentUser(user);
+      setUserProjects(projects);
+    },
+    []
+  );
 
-  const setUserProjectsHandler = (projects: Project[]) => {
+  const setUserProjectsHandler = useCallback((projects: Project[]) => {
     setUserProjects(projects);
-  };
+  }, []);
 
   const value = {
     currentUser,
